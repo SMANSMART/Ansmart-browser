@@ -1,1 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ansmart Browser - Downloads</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      padding: 10px;
+      font-family: Arial, sans-serif;
+    }
 
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    #downloadForm {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    #downloadForm input {
+      flex: 1;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    #downloadForm button {
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: none;
+      background: #4285f4;
+      color: white;
+      cursor: pointer;
+    }
+
+    #downloadList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .downloadItem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #f5f5f5;
+    }
+
+    .downloadItem span {
+      flex: 1;
+      margin-left: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .downloadItem button {
+      margin-left: 5px;
+      padding: 3px 7px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .progressBar {
+      width: 100%;
+      background: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 5px;
+      height: 8px;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: #4caf50;
+    }
+  </style>
+</head>
+<body>
+  <h2>Downloads</h2>
+
+  <form id="downloadForm">
+    <input type="text" id="downloadURL" placeholder="Enter file URL to download">
+    <button type="submit">Download</button>
+  </form>
+
+  <div id="downloadList"></div>
+
+  <script>
+    const downloadForm = document.getElementById('downloadForm');
+    const downloadURL = document.getElementById('downloadURL');
+    const downloadList = document.getElementById('downloadList');
+
+    let activeDownloads = 0;
+    const maxSimultaneous = 4;
+    let queue = [];
+
+    class DownloadItem {
+      constructor(url) {
+        this.url = url;
+        this.controller = new AbortController();
+        this.paused = false;
+        this.completed = false;
+        this.blob = null;
+
+        this.createDOM();
+      }
+
+      createDOM() {
+        this.item = document.createElement('div');
+        this.item.className = 'downloadItem';
+
+        this.nameSpan = document.createElement('span');
+        this.nameSpan.innerText = this.url;
+
+        this.progressBar = document.createElement('div');
+        this.progressBar.className = 'progressBar';
+        this.progress = document.createElement('div');
+        this.progress.className = 'progress';
+        this.progressBar.appendChild(this.progress);
+
+        this.pauseBtn = document.createElement('button');
+        this.pauseBtn.innerText = 'Pause';
+        this.pauseBtn.addEventListener('click', () => this.togglePause());
+
+        this.openBtn = document.createElement('button');
+        this.openBtn.innerText = 'Open';
+        this.openBtn.disabled = true;
+        this.openBtn.addEventListener('click', () => this.openFile());
+
+        this.item.appendChild(this.nameSpan);
+        this.item.appendChild(this.progressBar);
+        this.item.appendChild(this.pauseBtn);
+        this.item.appendChild(this.openBtn);
+
+        downloadList.appendChild(this.item);
+      }
+
+      async start() {
+        if(activeDownloads >= maxSimultaneous){
+          queue.push(this);
+          return;
+        }
+        activeDownloads++;
+        try {
+          const res = await fetch(this.url, { signal: this.controller.signal });
+          const reader = res.body.getReader();
+          const contentLength = +res.headers.get('Content-Length');
+          let receivedLength = 0;
+          const chunks = [];
+
+          while(true){
+            const {done, value} = await reader.read();
+            if(done) break;
+            chunks.push(value);
+            receivedLength += value.length;
+            this.progress.style.width = ((receivedLength / contentLength) * 100) + '%';
+            if(this.paused){
+              await new Promise(resolve => {
+                const check = setInterval(() => {
+                  if(!this.paused) { clearInterval(check); resolve(); }
+                }, 100);
+              });
+            }
+          }
+
+          this.blob = new Blob(chunks);
+          this.completed = true;
+          this.openBtn.disabled = false;
+          this.pauseBtn.disabled = true;
+          this.progress.style.width = '100%';
+        } catch(e){
+          if(this.paused) return;
+          alert("Download failed: " + this.url);
+        } finally {
+          activeDownloads--;
+          if(queue.length > 0){
+            const next = queue.shift();
+            next.start();
+          }
+        }
+      }
+
+      togglePause() {
+        this.paused = !this.paused;
+        this.pauseBtn.innerText = this.paused ? 'Resume' : 'Pause';
+      }
+
+      openFile() {
+        if(!this.completed || !this.blob) return;
+        const blobURL = URL.createObjectURL(this.blob);
+        window.open(blobURL, '_blank');
+      }
+    }
+
+    downloadForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const url = downloadURL.value.trim();
+      if(url){
+        const item = new DownloadItem(url);
+        item.start();
+        downloadURL.value = '';
+      }
+    });
+  </script>
+</body>
+    </html>
