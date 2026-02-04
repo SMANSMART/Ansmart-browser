@@ -2,29 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ansmart Browser</title>
+  <!-- Link main CSS -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<header>
-  <div class="controls">
-    <button onclick="goBack()">⬅</button>
-    <button onclick="goForward()">➡</button>
-    <button onclick="reloadPage()">🔄</button>
-    <button onclick="goHome()">🏠</button>
+  <!-- Header / Browser Controls -->
+  <header>
+    <div class="controls">
+      <button id="backBtn" title="Back">⬅</button>
+      <button id="forwardBtn" title="Forward">➡</button>
+      <button id="reloadBtn" title="Reload">🔄</button>
+      <button id="homeBtn" title="Home">🏠</button>
 
-    <input type="text" id="addressBar" placeholder="Search or enter URL">
-    <button onclick="loadPage()">Go</button>
+      <input type="text" id="addressBar" placeholder="Search or enter URL">
 
-    <button onclick="toggleTheme()">🌙</button>
-  </div>
-</header>
+      <button id="goBtn" title="Go">Go</button>
+      <button id="themeToggle" title="Toggle Theme">🌙</button>
+    </div>
+  </header>
 
-<main>
-  <iframe id="browserFrame"></iframe>
-</main>
+  <!-- Main Browser Display -->
+  <main>
+    <iframe id="browserFrame" sandbox="allow-scripts allow-same-origin allow-forms" src="https://www.google.com"></iframe>
+  </main>
 
-<script src="js/app.js"></script>
+  <!-- Optional Footer (can add downloads/bookmarks later) -->
+  <!-- <footer></footer> -->
+
+  <!-- JS -->
+  <script src="js/browser.js"></script>
 </body>
 </html>
