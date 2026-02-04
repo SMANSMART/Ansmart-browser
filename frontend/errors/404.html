@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found - Ansmart Browser</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f2f2f2;
+      color: #333;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
 
+    h1 {
+      font-size: 5rem;
+      margin-bottom: 10px;
+      color: #4285f4;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      background: #4285f4;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    button:hover {
+      background: #3367d6;
+      transform: scale(1.05);
+    }
+
+    img {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="404">
+  <h1>404</h1>
+  <h2>Oops! Page Not Found</h2>
+  <p>The page you are looking for does not exist or has been moved.</p>
+  <button onclick="goHome()">Go to Homepage</button>
+
+  <script>
+    function goHome() {
+      if(window.opener && window.opener.document.getElementById("browserFrame")){
+        window.opener.document.getElementById("browserFrame").src = "../pages/home.html";
+      } else {
+        window.location.href = "../pages/home.html";
+      }
+    }
+  </script>
+
+</body>
+</html>
