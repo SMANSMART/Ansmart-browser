@@ -1,1 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ansmart Browser</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
+<header>
+  <div class="controls">
+    <button onclick="goBack()">⬅</button>
+    <button onclick="goForward()">➡</button>
+    <button onclick="reloadPage()">🔄</button>
+    <button onclick="goHome()">🏠</button>
+
+    <input type="text" id="addressBar" placeholder="Search or enter URL">
+    <button onclick="loadPage()">Go</button>
+
+    <button onclick="toggleTheme()">🌙</button>
+  </div>
+</header>
+
+<main>
+  <iframe id="browserFrame"></iframe>
+</main>
+
+<script src="js/app.js"></script>
+</body>
+</html>
