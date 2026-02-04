@@ -1,1 +1,11 @@
-
+{
+  "preferences": {
+    "homepage": "https://www.google.com",
+    "theme": "light",
+    "searchEngine": "google",
+    "newTabPage": "homepage",
+    "showBookmarksBar": true,
+    "showHistoryBar": true,
+    "enableNotifications": false
+  }
+}
