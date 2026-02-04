@@ -1,1 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Ansmart Browser</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f2f2f2;
+      color: #333;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
 
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      color: #f44336;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      background: #4285f4;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    button:hover {
+      background: #3367d6;
+      transform: scale(1.05);
+    }
+
+    img {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="offline">
+  <h1>Offline</h1>
+  <h2>No Internet Connection</h2>
+  <p>Please check your network settings and try again.</p>
+  <button onclick="retry()">Retry</button>
+
+  <script>
+    function retry() {
+      if(window.opener && window.opener.document.getElementById("browserFrame")){
+        window.opener.document.getElementById("browserFrame").contentWindow.location.reload();
+      } else {
+        location.reload();
+      }
+    }
+
+    // Optional: auto-detect when back online
+    window.addEventListener('online', () => {
+      alert("Connection restored! Reloading...");
+      retry();
+    });
+  </script>
+
+</body>
+</html>
