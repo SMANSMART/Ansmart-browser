@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ansmart Browser - History</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: 10px;
+      gap: 10px;
+      font-family: Arial, sans-serif;
+    }
 
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    #historyGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 15px;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+
+    .historyCard {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .historyCard:hover {
+      transform: scale(1.05);
+      background: #e0e0e0;
+    }
+
+    .historyCard img {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 5px;
+    }
+
+    .historyCard span {
+      text-align: center;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    .visitedTime {
+      font-size: 11px;
+      color: #555;
+      margin-top: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>History</h2>
+  <div id="historyGrid"></div>
+
+  <script src="../js/storage.js"></script>
+  <script>
+    const historyGrid = document.getElementById("historyGrid");
+
+    function loadHistory() {
+      let history = JSON.parse(localStorage.getItem("ansmartHistory")) || [];
+
+      // If empty, load default from data/history.json
+      if(history.length === 0){
+        fetch("../data/history.json")
+          .then(res => res.json())
+          .then(data => {
+            history = data.history.map(h => h.url);
+            localStorage.setItem("ansmartHistory", JSON.stringify(history));
+            renderHistory(data.history);
+          });
+      } else {
+        renderHistory(history.map(url => ({url, title: url, visitedAt: new Date().toISOString(), icon: "https://www.google.com/s2/favicons?domain=" + url})));
+      }
+    }
+
+    function renderHistory(items) {
+      historyGrid.innerHTML = "";
+
+      items.forEach(item => {
+        const url = item.url;
+        const title = item.title || url;
+        const icon = item.icon || "https://www.google.com/s2/favicons?domain=" + url;
+        const visitedTime = item.visitedAt ? new Date(item.visitedAt).toLocaleString() : "";
+
+        const card = document.createElement("div");
+        card.className = "historyCard";
+        card.innerHTML = `<img src="${icon}" alt="icon"><span>${title}</span><span class="visitedTime">${visitedTime}</span>`;
+
+        card.addEventListener("click", () => {
+          if(window.opener && window.opener.document.getElementById("browserFrame")){
+            window.opener.document.getElementById("browserFrame").src = url;
+          }
+        });
+
+        historyGrid.appendChild(card);
+      });
+    }
+
+    loadHistory();
+  </script>
+</body>
+</html>
