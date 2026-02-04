@@ -1,1 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ansmart Browser - Home</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #4285f4, #fff);
+      color: #333;
+    }
 
+    .home-container {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: white;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+
+    #searchForm {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    #searchInput {
+      width: 300px;
+      max-width: 90%;
+      padding: 12px 15px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    #searchBtn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 25px;
+      background: #34a853;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    #searchBtn:hover {
+      transform: scale(1.05);
+    }
+
+    .quick-links {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 20px;
+      justify-items: center;
+    }
+
+    .link-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255,255,255,0.8);
+      padding: 15px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 120px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .link-card:hover {
+      transform: scale(1.05);
+      background: rgba(255,255,255,1);
+    }
+
+    .link-card img {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 8px;
+    }
+
+    .link-card span {
+      font-size: 14px;
+      text-align: center;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="home-container">
+    <h1>Ansmart Browser</h1>
+
+    <form id="searchForm">
+      <input type="text" id="searchInput" placeholder="Search Google or type URL">
+      <button type="submit" id="searchBtn">Search</button>
+    </form>
+
+    <div class="quick-links" id="quickLinks"></div>
+  </div>
+
+  <script>
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const quickLinks = document.getElementById("quickLinks");
+
+    // Default quick links (can be loaded from bookmarks.json later)
+    const defaultLinks = [
+      { name: "Google", url: "https://www.google.com", icon: "https://www.google.com/favicon.ico" },
+      { name: "Ansmart", url: "https://smansmartlimited.mobi.ng", icon: "https://smansmartlimited.mobi.ng/favicon.ico" },
+      { name: "YouTube", url: "https://www.youtube.com", icon: "https://www.youtube.com/favicon.ico" },
+      { name: "Wikipedia", url: "https://www.wikipedia.org", icon: "https://www.wikipedia.org/static/favicon/wikipedia.ico" }
+    ];
+
+    // Render quick links in grid
+    function renderQuickLinks() {
+      quickLinks.innerHTML = "";
+      defaultLinks.forEach(link => {
+        const card = document.createElement("div");
+        card.className = "link-card";
+        card.innerHTML = `<img src="${link.icon}" alt="icon"><span>${link.name}</span>`;
+        card.addEventListener("click", () => {
+          // Open in main browser iframe
+          if(window.opener && window.opener.document.getElementById("browserFrame")){
+            window.opener.document.getElementById("browserFrame").src = link.url;
+          }
+        });
+        quickLinks.appendChild(card);
+      });
+    }
+
+    renderQuickLinks();
+
+    // Search form submit
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const query = searchInput.value.trim();
+      if(!query) return;
+
+      let url = query;
+      if(!url.startsWith("http")) {
+        url = "https://www.google.com/search?q=" + encodeURIComponent(query);
+      }
+
+      if(window.opener && window.opener.document.getElementById("browserFrame")){
+        window.opener.document.getElementById("browserFrame").src = url;
+      }
+      searchInput.value = "";
+    });
+  </script>
+
+</body>
+</html>
