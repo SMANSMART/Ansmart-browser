@@ -1,1 +1,14 @@
-
+{
+  "bookmarks": [
+    {
+      "name": "Google",
+      "url": "https://www.google.com",
+      "icon": "https://www.google.com/favicon.ico"
+    },
+    {
+      "name": "Ansmart Official",
+      "url": "https://smansmartlimited.mobi.ng",
+      "icon": "https://smansmartlimited.mobi.ng/favicon.ico"
+    }
+  ]
+}
