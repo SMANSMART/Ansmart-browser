@@ -1,1 +1,31 @@
+/* ===========================
+   DARK THEME
+=========================== */
+body {
+  background-color: #121212;
+  color: #ffffff;
+}
 
+header {
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.controls input {
+  background-color: #2b2b2b;
+  color: #ffffff;
+  border: 1px solid #555;
+}
+
+.controls button {
+  background-color: #3a73f5;
+  color: #ffffff;
+}
+
+.controls button:hover {
+  background-color: #2b5ebc;
+}
+
+iframe {
+  background-color: #1a1a1a;
+}
