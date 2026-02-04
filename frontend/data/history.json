@@ -1,1 +1,28 @@
-
+{
+  "history": [
+    {
+      "title": "Google",
+      "url": "https://www.google.com",
+      "visitedAt": "2026-02-04T00:00:00Z",
+      "icon": "https://www.google.com/favicon.ico"
+    },
+    {
+      "title": "Ansmart Official",
+      "url": "https://smansmartlimited.mobi.ng",
+      "visitedAt": "2026-02-04T00:05:00Z",
+      "icon": "https://smansmartlimited.mobi.ng/favicon.ico"
+    },
+    {
+      "title": "Wikipedia",
+      "url": "https://www.wikipedia.org",
+      "visitedAt": "2026-02-04T00:10:00Z",
+      "icon": "https://www.wikipedia.org/static/favicon/wikipedia.ico"
+    },
+    {
+      "title": "YouTube",
+      "url": "https://www.youtube.com",
+      "visitedAt": "2026-02-04T00:15:00Z",
+      "icon": "https://www.youtube.com/favicon.ico"
+    }
+  ]
+}
