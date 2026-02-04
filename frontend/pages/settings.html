@@ -1,1 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ansmart Browser - Settings</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background: #f5f5f5;
+      color: #333;
+    }
 
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .setting-group {
+      margin-bottom: 25px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .setting-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .setting-group input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .setting-group button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      background: #4285f4;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .setting-group button:hover {
+      background: #3367d6;
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Ansmart Browser Settings</h2>
+
+  <!-- Homepage Setting -->
+  <div class="setting-group">
+    <label for="homepageInput">Homepage URL</label>
+    <input type="text" id="homepageInput" placeholder="https://www.google.com">
+    <button id="saveHomepageBtn">Save Homepage</button>
+  </div>
+
+  <!-- Theme Setting -->
+  <div class="setting-group">
+    <label>Theme</label>
+    <div class="theme-toggle">
+      <input type="radio" name="theme" id="lightTheme" value="light">
+      <label for="lightTheme">Light</label>
+      <input type="radio" name="theme" id="darkTheme" value="dark">
+      <label for="darkTheme">Dark</label>
+    </div>
+  </div>
+
+  <!-- Clear History -->
+  <div class="setting-group">
+    <label>History</label>
+    <button id="clearHistoryBtn">Clear History</button>
+  </div>
+
+  <!-- Clear Bookmarks -->
+  <div class="setting-group">
+    <label>Bookmarks</label>
+    <button id="clearBookmarksBtn">Clear Bookmarks</button>
+  </div>
+
+  <!-- Reset Preferences -->
+  <div class="setting-group">
+    <label>Reset All Preferences</label>
+    <button id="resetPrefsBtn">Reset Preferences</button>
+  </div>
+
+  <script src="../js/settings.js"></script>
+  <script>
+    const homepageInput = document.getElementById("homepageInput");
+    const saveHomepageBtn = document.getElementById("saveHomepageBtn");
+    const lightTheme = document.getElementById("lightTheme");
+    const darkTheme = document.getElementById("darkTheme");
+    const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+    const clearBookmarksBtn = document.getElementById("clearBookmarksBtn");
+    const resetPrefsBtn = document.getElementById("resetPrefsBtn");
+
+    // Load existing preferences
+    const prefs = JSON.parse(localStorage.getItem("ansmartPreferences")) || {
+      homepage: "https://www.google.com",
+      theme: "light"
+    };
+
+    homepageInput.value = prefs.homepage || "https://www.google.com";
+    if(prefs.theme === "dark") darkTheme.checked = true;
+    else lightTheme.checked = true;
+
+    // Save homepage
+    saveHomepageBtn.addEventListener("click", () => {
+      prefs.homepage = homepageInput.value.trim() || "https://www.google.com";
+      localStorage.setItem("ansmartPreferences", JSON.stringify(prefs));
+      alert("Homepage saved!");
+    });
+
+    // Theme toggle
+    lightTheme.addEventListener("change", () => {
+      prefs.theme = "light";
+      localStorage.setItem("ansmartPreferences", JSON.stringify(prefs));
+      document.body.style.background = "#f5f5f5";
+      document.body.style.color = "#333";
+    });
+
+    darkTheme.addEventListener("change", () => {
+      prefs.theme = "dark";
+      localStorage.setItem("ansmartPreferences", JSON.stringify(prefs));
+      document.body.style.background = "#121212";
+      document.body.style.color = "#fff";
+    });
+
+    // Clear history
+    clearHistoryBtn.addEventListener("click", () => {
+      localStorage.removeItem("ansmartHistory");
+      alert("History cleared!");
+    });
+
+    // Clear bookmarks
+    clearBookmarksBtn.addEventListener("click", () => {
+      localStorage.removeItem("ansmartBookmarks");
+      alert("Bookmarks cleared!");
+    });
+
+    // Reset all preferences
+    resetPrefsBtn.addEventListener("click", () => {
+      localStorage.removeItem("ansmartPreferences");
+      localStorage.removeItem("ansmartBookmarks");
+      localStorage.removeItem("ansmartHistory");
+      alert("Preferences reset to default!");
+      location.reload();
+    });
+  </script>
+
+</body>
+</html>
