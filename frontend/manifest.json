@@ -1,1 +1,22 @@
-
+{
+  "name": "Ansmart Browser",
+  "short_name": "Ansmart",
+  "description": "Fast, simple, and smart web browsing app with Google search, bookmarks, history, and tabs.",
+  "start_url": "./pages/home.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#4285f4",
+  "icons": [
+    {
+      "src": "./assets/icons/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/icons/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
