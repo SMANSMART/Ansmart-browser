@@ -4,8 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ansmart Browser</title>
-  <!-- Link main CSS -->
+
+  <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/light.css">
+  <link rel="stylesheet" href="css/dark.css">
+
+  <!-- Manifest for PWA -->
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
@@ -29,10 +35,14 @@
     <iframe id="browserFrame" sandbox="allow-scripts allow-same-origin allow-forms" src="https://www.google.com"></iframe>
   </main>
 
-  <!-- Optional Footer (can add downloads/bookmarks later) -->
+  <!-- Optional Footer -->
   <!-- <footer></footer> -->
 
   <!-- JS -->
   <script src="js/browser.js"></script>
+  <script src="js/tabs.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/storage.js"></script>
+
 </body>
 </html>
